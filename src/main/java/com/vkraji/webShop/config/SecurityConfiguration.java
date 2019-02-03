@@ -41,6 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "signup", "favicon.ico").permitAll()
+                .antMatchers("/checkout").authenticated()
                 .anyRequest().permitAll()
                 .and()
                 .formLogin()

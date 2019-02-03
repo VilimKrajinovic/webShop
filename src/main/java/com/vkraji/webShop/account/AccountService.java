@@ -48,6 +48,10 @@ public class AccountService implements UserDetailsService {
         return createUser(account);
     }
 
+    public Account findUserByEmail(String email){
+        return accountRepository.findOneByEmail(email);
+    }
+
     private User createUser(Account account) {
         return new User(account.getEmail(), account.getPassword(), Collections.singleton(createAuthority(account)));
     }

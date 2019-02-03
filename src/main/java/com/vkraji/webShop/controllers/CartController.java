@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -55,7 +54,7 @@ public class CartController {
         mv.addObject("cart", cart);
 
         CartItem item = cartItemService.findCartItemById(Long.valueOf(extractIdFromJson(json)));
-        item.increment();
+        cart.incrementQuantity(item);
         cartItemService.save(item);
 
         return mv;
@@ -69,12 +68,23 @@ public class CartController {
 
         CartItem item = cartItemService.findCartItemById(Long.valueOf(extractIdFromJson(json)));
         if(item.getQuantity() > 1) {
-            item.decrement();
+            cart.decrementQuantity(item);
         }
         cartItemService.save(item);
         return mv;
     }
 
+    @PostMapping("cart/delete")
+    public ModelAndView delete(@RequestBody String json, HttpSession session){
+        ModelAndView mv = new ModelAndView("cart");
+        Cart cart = (Cart) session.getAttribute("cart");
+        mv.addObject("cart", cart);
+
+        CartItem item = cartItemService.findCartItemById(Long.valueOf(extractIdFromJson(json)));
+
+        cart.delete(item);
+        return mv;
+    }
 
     private String extractIdFromJson(String json){
         JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();

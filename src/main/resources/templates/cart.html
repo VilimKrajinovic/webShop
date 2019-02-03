@@ -22,7 +22,7 @@
             console.log(json);
             $.ajax({
                 type: "POST",
-                url:"/cart/increment",
+                url: "/cart/increment",
                 data: json,
                 contentType: "application/json",
                 success: function (data, status) {
@@ -38,7 +38,7 @@
             console.log(json);
             $.ajax({
                 type: "POST",
-                url:"/cart/decrement",
+                url: "/cart/decrement",
                 data: json,
                 contentType: "application/json",
                 success: function (data, status) {
@@ -49,7 +49,23 @@
             });
             location.reload();
         }
-
+        function deleteItem(id){
+            var data = {selected: id};
+            var json = JSON.stringify(data);
+            console.log(json);
+            $.ajax({
+                type: "POST",
+                url: "/cart/delete",
+                data: json,
+                contentType: "application/json",
+                success: function (data, status) {
+                    console.log(data);
+                    console.log(status);
+                },
+                dataType: "json"
+            });
+            location.reload();
+        }
     </script>
 </head>
 <body>
@@ -71,15 +87,17 @@
 
                             <br/>
 
-                            <a class="btn btn-sm btn-success" th:onclick="'incrementQuantity('+${item.getId()}+')'">+1</a>
-                            <a class="btn btn-sm btn-success" th:onclick="'decrementQuantity('+${item.getId()}+')'">-1</a>
+                            <a class="btn btn-sm btn-success"
+                               th:onclick="'incrementQuantity('+${item.getId()}+')'">+1</a>
+                            <a class="btn btn-sm btn-success"
+                               th:onclick="'decrementQuantity('+${item.getId()}+')'">-1</a>
 
-                            <a class="btn btn-danger" th:href="'cart?remove=' + ${item.getId()}">Remove</a>
-
+                            <a class="btn btn-danger" th:onclick="'deleteItem('+${item.getId()}+')'">Remove</a>
                         </div>
                     </th:block>
                 </div>
             </div>
+            <a class="btn btn-success" th:href="'/checkout'">Proceed with checkout</a>
         </div>
     </div>
 </div>

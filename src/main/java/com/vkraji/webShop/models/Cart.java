@@ -26,17 +26,19 @@ public class Cart {
     }
 
     public void incrementQuantity(CartItem cartItem){
+        cartItem.increment();
         for (CartItem item: items) {
             if(item.getId() == cartItem.getId()){
-                item.setQuantity(item.getQuantity() + 1);
+                item.setQuantity(cartItem.getQuantity());
             }
         }
     }
 
     public void decrementQuantity(CartItem cartItem) {
+        cartItem.decrement();
         for (CartItem item: items) {
             if(item.getId() == cartItem.getId()){
-                item.setQuantity(item.getQuantity() - 1);
+                item.setQuantity(cartItem.getQuantity());
             }
         }
     }
@@ -47,6 +49,10 @@ public class Cart {
 
     public void add(CartItem item){
         items.add(item);
+    }
+
+    public void delete(CartItem item){
+        items.remove(item);
     }
 
 }
