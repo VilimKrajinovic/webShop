@@ -26,11 +26,13 @@ public class Order {
     private List<CartItem> items;
     private String orderType;
     private Instant orderTime;
+    private int totalPrice;
 
-    public Order(Account user, String orderType, List<CartItem> items) {
+    public Order(Account user, String orderType, List<CartItem> items, int totalPrice) {
         this.user = user;
         this.orderType = orderType;
         this.items = items;
+        this.totalPrice = totalPrice;
         orderTime = Instant.now();
     }
 }

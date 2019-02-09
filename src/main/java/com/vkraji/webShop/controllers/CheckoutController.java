@@ -31,7 +31,7 @@ public class CheckoutController {
     public String process(Principal principal, HttpSession session){
         Cart cart = (Cart) session.getAttribute("cart");
 
-        Order order = new Order(accountService.findUserByEmail(principal.getName()), "Gotovina", cart.getItems());
+        Order order = new Order(accountService.findUserByEmail(principal.getName()), "Gotovina", cart.getItems(), cart.getTotalCost());
         orderService.save(order);
 
         session.setAttribute("cart", new Cart());
@@ -42,7 +42,7 @@ public class CheckoutController {
     public String paypal(Principal principal, HttpSession session){
         Cart cart = (Cart) session.getAttribute("cart");
 
-        Order order = new Order(accountService.findUserByEmail(principal.getName()), "Paypal", cart.getItems());
+        Order order = new Order(accountService.findUserByEmail(principal.getName()), "Paypal", cart.getItems(), cart.getTotalCost());
         orderService.save(order);
 
         session.setAttribute("cart", new Cart());

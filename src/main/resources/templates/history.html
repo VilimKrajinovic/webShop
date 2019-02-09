@@ -21,7 +21,7 @@
 
 <div class="container clearfix">
     <div class="jumbotron">
-        <h2>History</h2>
+        <h2>History:</h2>
         <br/>
         <div>
             <div class="row">
@@ -32,21 +32,52 @@
                             <label th:text="${order.getUser().email}"></label>
                             <label th:text="'('+${order.getOrderType()}+')'"></label>
                             <label th:text="${order.getOrderTime()}"></label>
+                            <label th:text="'Total price: '+${order.getTotalPrice()}+'kn'"></label>
                             <br/>
-                            <table>
+                            <table class="table table-dark table-striped" style="padding: 3px;">
+                                <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Quantity</td>
+                                    <td>Price:</td>
+                                </tr>
+                                </thead>
+                                <tbody>
                                 <tr th:each="item  : ${order.getItems()}">
                                     <td th:text="${item.getProduct().getName()}">Username</td>
                                     <td th:text="${item.getQuantity()}">Quantity</td>
                                     <td th:text="${item.getQuantity() * item.getProduct().getPrice() +'kn'}">Price</td>
                                 </tr>
+                                </tbody>
                             </table>
                         </div>
                     </th:block>
                 </div>
             </div>
+
+            <div class="row table-responsive">
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                    <h2>Logins: </h2>
+                    <table class="table table-dark table-striped">
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>IP</th>
+                            <th>Time</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="log : ${logs}">
+                            <td th:text="${log.principal}"></td>
+                            <td th:text="${log.getIp()}"></td>
+                            <td th:text="${log.getTime()}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
 </body>
 </html>

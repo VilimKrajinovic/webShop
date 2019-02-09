@@ -30,4 +30,9 @@ public class ProductService {
     public Product findProductById(Long id){
         return productRepository.findById(id).orElse(null);
     }
+
+    public List<Product> getByCategory(String category){
+        Category selected = Category.valueOf(category);
+        return productRepository.findAllByCategory(selected);
+    }
 }

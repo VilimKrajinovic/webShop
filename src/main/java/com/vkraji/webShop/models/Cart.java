@@ -43,16 +43,20 @@ public class Cart {
         }
     }
 
-    public int getItemCount(){
-        return items.size();
-    }
-
     public void add(CartItem item){
         items.add(item);
     }
 
     public void delete(CartItem item){
         items.remove(item);
+    }
+
+    public int getTotalCost(){
+        int total = 0;
+        for (CartItem item: items) {
+            total += item.getProduct().getPrice() * item.getQuantity();
+        }
+        return total;
     }
 
 }

@@ -6,6 +6,7 @@ import com.google.gson.JsonParser;
 import com.vkraji.webShop.models.Cart;
 import com.vkraji.webShop.models.cartitem.CartItem;
 import com.vkraji.webShop.models.cartitem.CartItemService;
+import com.vkraji.webShop.models.helpers.JsonUtil;
 import com.vkraji.webShop.models.product.Product;
 import com.vkraji.webShop.models.product.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class CartController {
     public String insertCartItem(@RequestBody String json, HttpSession session) {
 
         Cart cart = (Cart) session.getAttribute("cart");
-        String selected = extractIdFromJson(json);
+        String selected = JsonUtil.extractIdFromJson(json);
 
         Product prod = productService.findProductById(Long.valueOf(selected));
         CartItem item = cartItemService.save(new CartItem(prod, 1));
@@ -53,7 +54,7 @@ public class CartController {
         Cart cart = (Cart) session.getAttribute("cart");
         mv.addObject("cart", cart);
 
-        CartItem item = cartItemService.findCartItemById(Long.valueOf(extractIdFromJson(json)));
+        CartItem item = cartItemService.findCartItemById(Long.valueOf(JsonUtil.extractIdFromJson(json)));
         cart.incrementQuantity(item);
         cartItemService.save(item);
 
@@ -66,7 +67,7 @@ public class CartController {
         Cart cart = (Cart) session.getAttribute("cart");
         mv.addObject("cart", cart);
 
-        CartItem item = cartItemService.findCartItemById(Long.valueOf(extractIdFromJson(json)));
+        CartItem item = cartItemService.findCartItemById(Long.valueOf(JsonUtil.extractIdFromJson(json)));
         if(item.getQuantity() > 1) {
             cart.decrementQuantity(item);
         }
@@ -80,16 +81,11 @@ public class CartController {
         Cart cart = (Cart) session.getAttribute("cart");
         mv.addObject("cart", cart);
 
-        CartItem item = cartItemService.findCartItemById(Long.valueOf(extractIdFromJson(json)));
-
+        CartItem item = cartItemService.findCartItemById(Long.valueOf(JsonUtil.extractIdFromJson(json)));
         cart.delete(item);
+
         return mv;
     }
 
-    private String extractIdFromJson(String json){
-        JsonObject jsonObject = new JsonParser().parse(json).getAsJsonObject();
-        JsonElement jsonId = jsonObject.get("selected");
-        String selected = jsonId.toString();
-        return selected;
-    }
+
 }

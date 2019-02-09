@@ -34,6 +34,6 @@ public class RegisterController {
         }
         Account account = accountService.save(registerForm.createAccount());
         accountService.signIn(account);
-        return "redirect:/";
+        return "redirect:/welcome";
     }
 }

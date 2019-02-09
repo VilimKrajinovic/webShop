@@ -32,6 +32,22 @@
                 dataType: "json"
             });
         }
+
+        function sort(sel){
+            var data = sel.options[sel.selectedIndex].text;
+            console.log(data);
+
+            $.ajax({
+                type: "GET",
+                url:"/?category="+data,
+                contentType: "application/json",
+                success: function (data, status) {
+                    console.log(data);
+                    console.log(status);
+                },
+                dataType: "json"
+            });
+        }
     </script>
 </head>
 <body>
@@ -42,6 +58,13 @@
         <h2>All products</h2>
         <br/>
         <div>
+            <select th:onchange="'location = this.value'">
+                <option th:value="'/'">--select--</option>
+                <option th:value="'/'">ALL</option>
+                <th:block th:each="category : ${categories}">
+                    <option th:value="'/?category='+${category.name()}" th:text="${category.name()}"></option>
+                </th:block>
+            </select>
             <div class="row">
                 <div>
                     <th:block th:each="product : ${products}">
