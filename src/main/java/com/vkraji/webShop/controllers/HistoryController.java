@@ -17,6 +17,7 @@ import java.util.List;
 @Controller
 public class HistoryController {
 
+    public static final String VIEW_NAME = "history";
     @Autowired
     OrderService orderService;
 
@@ -28,7 +29,7 @@ public class HistoryController {
 
     @GetMapping("/history")
     public ModelAndView index(Principal principal) {
-        ModelAndView mv = new ModelAndView("history");
+        ModelAndView mv = new ModelAndView(VIEW_NAME);
         Account account = accountService.findUserByEmail(principal.getName());
         mv.addObject("account", account);
 

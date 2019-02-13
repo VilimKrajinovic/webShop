@@ -13,12 +13,13 @@ import java.util.Arrays;
 @Controller
 public class HomeController {
 
+    public static final String VIEW_NAME = "home";
     @Autowired
     ProductService productService;
 
     @GetMapping("/")
     public ModelAndView index(@RequestParam(value = "category", required = false) String category) {
-        ModelAndView mv = new ModelAndView("home");
+        ModelAndView mv = new ModelAndView(VIEW_NAME);
 
         mv.addObject("categories", Arrays.asList(Category.values()));
         if(category != null){

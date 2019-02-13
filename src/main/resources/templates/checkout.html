@@ -45,6 +45,23 @@
             });
             window.location.replace("/success");
         }
+
+        var totalCost = 0;
+        function getTotalCost(){
+            $.ajax({
+                type: "GET",
+                url:"/cart/getTotalCost",
+                data: "",
+                success: function (data, status) {
+                    totalCost = data;
+                },
+                dataType: "json"
+            });
+        }
+
+        $(document).ready(function () {
+            getTotalCost();
+        });
     </script>
 
 </head>
@@ -83,7 +100,7 @@
                         return actions.payment.create({
                             transactions: [{
                                 amount: {
-                                    total: '30.0',
+                                    total: totalCost,
                                     currency: 'USD'
                                 }
                             }]

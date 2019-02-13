@@ -14,12 +14,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.Optional;
 
 @Controller
 public class CartController {
+
+    private static final String VIEW_NAME = "cart";
+    private static final String CART_NAME = "cart";
 
     @Autowired
     ProductService productService;
@@ -29,16 +34,15 @@ public class CartController {
 
     @GetMapping("/cart")
     public ModelAndView index(HttpSession session) {
-        ModelAndView mv = new ModelAndView("cart");
-        Cart cart = (Cart) session.getAttribute("cart");
-        mv.addObject("cart", cart);
+        ModelAndView mv = new ModelAndView(VIEW_NAME);
+        Cart cart = (Cart) session.getAttribute(CART_NAME);
+        mv.addObject(CART_NAME, cart);
         return mv;
     }
 
     @PostMapping("/cart/add")
     public String insertCartItem(@RequestBody String json, HttpSession session) {
-
-        Cart cart = (Cart) session.getAttribute("cart");
+        Cart cart = (Cart) session.getAttribute(CART_NAME);
         String selected = JsonUtil.extractIdFromJson(json);
 
         Product prod = productService.findProductById(Long.valueOf(selected));
@@ -49,10 +53,10 @@ public class CartController {
     }
 
     @PostMapping("cart/increment")
-    public ModelAndView incrementQuantitiy(@RequestBody String json, HttpSession session){
-        ModelAndView mv = new ModelAndView("cart");
-        Cart cart = (Cart) session.getAttribute("cart");
-        mv.addObject("cart", cart);
+    public ModelAndView incrementQuantitiy(@RequestBody String json, HttpSession session) {
+        ModelAndView mv = new ModelAndView(VIEW_NAME);
+        Cart cart = (Cart) session.getAttribute(CART_NAME);
+        mv.addObject(CART_NAME, cart);
 
         CartItem item = cartItemService.findCartItemById(Long.valueOf(JsonUtil.extractIdFromJson(json)));
         cart.incrementQuantity(item);
@@ -62,13 +66,13 @@ public class CartController {
     }
 
     @PostMapping("cart/decrement")
-    public ModelAndView decrementQuantity(@RequestBody String json, HttpSession session){
-        ModelAndView mv = new ModelAndView("cart");
-        Cart cart = (Cart) session.getAttribute("cart");
-        mv.addObject("cart", cart);
+    public ModelAndView decrementQuantity(@RequestBody String json, HttpSession session) {
+        ModelAndView mv = new ModelAndView(VIEW_NAME);
+        Cart cart = (Cart) session.getAttribute(CART_NAME);
+        mv.addObject(CART_NAME, cart);
 
         CartItem item = cartItemService.findCartItemById(Long.valueOf(JsonUtil.extractIdFromJson(json)));
-        if(item.getQuantity() > 1) {
+        if (item.getQuantity() > 1) {
             cart.decrementQuantity(item);
         }
         cartItemService.save(item);
@@ -76,15 +80,24 @@ public class CartController {
     }
 
     @PostMapping("cart/delete")
-    public ModelAndView delete(@RequestBody String json, HttpSession session){
-        ModelAndView mv = new ModelAndView("cart");
-        Cart cart = (Cart) session.getAttribute("cart");
-        mv.addObject("cart", cart);
+    public ModelAndView delete(@RequestBody String json, HttpSession session) {
+        ModelAndView mv = new ModelAndView(VIEW_NAME);
+        Cart cart = (Cart) session.getAttribute(CART_NAME);
+        mv.addObject(CART_NAME, cart);
 
         CartItem item = cartItemService.findCartItemById(Long.valueOf(JsonUtil.extractIdFromJson(json)));
         cart.delete(item);
 
         return mv;
+    }
+
+    @GetMapping("cart/getTotalCost")
+    public @ResponseBody
+    int getTotatalCost(HttpSession session) {
+        Cart cart = (Cart) session.getAttribute(CART_NAME);
+        return Optional.ofNullable(cart)
+                .map(Cart::getTotalCost)
+                .orElse(0);
     }
 
 

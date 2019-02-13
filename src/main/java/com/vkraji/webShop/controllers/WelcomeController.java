@@ -14,12 +14,13 @@ import java.time.Instant;
 @Controller
 public class WelcomeController {
 
+    public static final String VIEW_NAME = "welcome";
     @Autowired
     LogService logService;
 
     @GetMapping("/welcome")
     public ModelAndView index(Principal principal, HttpServletRequest request) {
-        ModelAndView mv = new ModelAndView("welcome");
+        ModelAndView mv = new ModelAndView(VIEW_NAME);
 
         logService.save(new Log(principal.getName(), request.getRemoteAddr(), Instant.now()));
 

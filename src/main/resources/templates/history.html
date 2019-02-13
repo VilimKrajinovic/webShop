@@ -27,8 +27,8 @@
             <div class="row">
                 <div>
                     <th:block th:each="order : ${orders}">
-                        <div class="col-lg-9 col-sm-4 float-left"
-                             style="width: 250px; background-color: #ccc; border-radius: 2px; margin: 5px;padding: 10px;">
+                        <div class="col-lg-9 col-sm-3 float-left"
+                             style="width: 300px; background-color: #ccc; border-radius: 2px; margin: 5px;padding: 10px;">
                             <label th:text="${order.getUser().email}"></label>
                             <label th:text="'('+${order.getOrderType()}+')'"></label>
                             <label th:text="${order.getOrderTime()}"></label>
