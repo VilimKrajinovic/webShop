@@ -15,5 +15,4 @@ public class SpringMvcConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(new CustomInterceptor());
     }
 
-
 }
