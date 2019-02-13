@@ -22,7 +22,7 @@
             console.log(json);
             $.ajax({
                 type: "POST",
-                url:"/cart/add",
+                url: "/cart/add",
                 data: json,
                 contentType: "application/json",
                 success: function (data, status) {
@@ -33,13 +33,13 @@
             });
         }
 
-        function sort(sel){
+        function sort(sel) {
             var data = sel.options[sel.selectedIndex].text;
             console.log(data);
 
             $.ajax({
                 type: "GET",
-                url:"/?category="+data,
+                url: "/?category=" + data,
                 contentType: "application/json",
                 success: function (data, status) {
                     console.log(data);
@@ -73,6 +73,9 @@
                             <label th:text="${product.getName()}"></label>
                             <br/>
                             <label th:text="'Category: ' + ${product.getCategory()}"></label>
+                            <br/>
+                            <label th:text="'Price: ' + ${product.getPrice()}+'kn'"></label>
+                            <br/>
                             <a class="btn btn-dark" style="color:white"
                                th:onclick="'addToCart('+${product.getId()}+')'">Add to cart</a>
                         </div>

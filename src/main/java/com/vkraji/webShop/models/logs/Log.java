@@ -7,14 +7,24 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.security.Principal;
+import javax.persistence.Transient;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.Locale;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 @Entity
 public class Log {
+
+    @Transient
+    DateTimeFormatter formatter =
+            DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
+                    .withLocale( Locale.UK )
+                    .withZone( ZoneId.systemDefault() );
 
     @Id
     @GeneratedValue()
@@ -28,5 +38,9 @@ public class Log {
         this.principal = principal;
         this.ip = ip;
         this.time = time;
+    }
+
+    public String getTime(){
+        return formatter.format(time);
     }
 }

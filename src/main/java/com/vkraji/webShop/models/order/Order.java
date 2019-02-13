@@ -8,13 +8,23 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.security.Principal;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "order_table")
 @Data
 @NoArgsConstructor
 public class Order {
+
+    @Transient
+    DateTimeFormatter formatter =
+            DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
+                    .withLocale( Locale.UK )
+                    .withZone( ZoneId.systemDefault() );
 
     @Id
     @GeneratedValue()
@@ -35,4 +45,10 @@ public class Order {
         this.totalPrice = totalPrice;
         orderTime = Instant.now();
     }
+
+    public String getTime(){
+        return formatter.format(orderTime);
+    }
+
+
 }

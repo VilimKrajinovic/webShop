@@ -31,7 +31,7 @@
                              style="width: 300px; background-color: #ccc; border-radius: 2px; margin: 5px;padding: 10px;">
                             <label th:text="${order.getUser().email}"></label>
                             <label th:text="'('+${order.getOrderType()}+')'"></label>
-                            <label th:text="${order.getOrderTime()}"></label>
+                            <label th:text="${order.getTime()}"></label>
                             <label th:text="'Total price: '+${order.getTotalPrice()}+'kn'"></label>
                             <br/>
                             <table class="table table-dark table-striped" style="padding: 3px;">
